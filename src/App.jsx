@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from 'components/Header';
 import Grid from 'components/Grid';
 import Keyboard from 'components/Keyboard';
@@ -24,6 +25,7 @@ import styles from './App.module.scss';
 import 'styles/_transitionStyles.scss';
 
 function App() {
+  const { t } = useTranslation();
   const [boardState, setBoardState] = useLocalStorage('boardState', {
     guesses: [],
     solutionIndex: '',
@@ -78,12 +80,12 @@ function App() {
   useEffect(() => {
     if (guesses.includes(solution.toUpperCase())) {
       setIsGameWon(true);
-      setTimeout(() => showAlert('Well done', 'success'), ALERT_DELAY);
+      setTimeout(() => showAlert(t('well-done'), 'success'), ALERT_DELAY);
       setTimeout(() => setIsStatsModalOpen(true), ALERT_DELAY + 1000);
     } else if (guesses.length === MAX_CHALLENGES) {
       setIsGameLost(true);
       setTimeout(
-        () => showAlert(`The word was ${solution}`, 'error', true),
+        () => showAlert(t('word-was', { solution }), 'error', true),
         ALERT_DELAY
       );
       setTimeout(() => setIsStatsModalOpen(true), ALERT_DELAY + 1000);
@@ -128,16 +130,16 @@ function App() {
 
     if (currentGuess.length < MAX_WORD_LENGTH) {
       setIsJiggling(true);
-      return showAlert('Not enough letters', 'error');
+      return showAlert(t('not-enough-letters'), 'error');
     }
 
     if (!isWordValid(currentGuess)) {
       setIsJiggling(true);
-      return showAlert('Not in word list', 'error');
+      return showAlert(t('not-in-word-list'), 'error');
     }
 
     if (isHardMode) {
-      const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses);
+      const firstMissingReveal = findFirstUnusedReveal(currentGuess, guesses, t);
       if (firstMissingReveal) {
         setIsJiggling(true);
         return showAlert(firstMissingReveal, 'error');

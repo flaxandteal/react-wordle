@@ -70,7 +70,7 @@ export const getStatuses = guesses => {
 // build a set of previously revealed letters - present and correct
 // guess must use correct letters in that space and any other revealed letters
 // also check if all revealed instances of a letter are used (i.e. two C's)
-export const findFirstUnusedReveal = (word, guesses) => {
+export const findFirstUnusedReveal = (word, guesses, t) => {
   if (guesses.length === 0) {
     return false;
   }
@@ -86,7 +86,7 @@ export const findFirstUnusedReveal = (word, guesses) => {
       lettersLeftArray.push(splitGuess[i]);
 
     if (statuses[i] === 'correct' && splitWord[i] !== splitGuess[i])
-      return `Must use ${splitGuess[i]} in position ${i + 1}`;
+      return t('must-use-position', { letter: splitGuess[i], position: i + 1 });
   }
 
   // check for the first unused letter, taking duplicate letters
@@ -100,7 +100,7 @@ export const findFirstUnusedReveal = (word, guesses) => {
   }
 
   if (lettersLeftArray.length > 0)
-    return `Guess must contain ${lettersLeftArray[0]}`;
+    return t('guess-must-contain', { letter: lettersLeftArray[0] });
 
   return false;
 };
@@ -137,12 +137,12 @@ const getSuccessRate = gameStats => {
   );
 };
 
-export const shareStatus = (guesses, isGameLost, isHardMode) => {
+export const shareStatus = (guesses, isGameLost, isHardMode, t) => {
   const textToShare =
-    `Wordle Game
-#${solutionIndex} 
-${isGameLost ? 'X' : guesses.length}/${MAX_CHALLENGES} 
-${isHardMode ? 'Hard Mode' : ''}
+    `${t('share-text-title')}
+#${solutionIndex}
+${isGameLost ? 'X' : guesses.length}/${MAX_CHALLENGES}
+${isHardMode ? t('hard-mode') : ''}
 \n` + generateEmojiGrid(guesses);
 
   navigator.clipboard.writeText(textToShare);

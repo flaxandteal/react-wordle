@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import CountDown from 'react-countdown';
+import { useTranslation } from 'react-i18next';
 import Modal from 'components/Modal';
 import styles from './StatsModal.module.scss';
 import { shareStatus, tomorrow } from 'lib/words';
@@ -15,20 +16,22 @@ const StatsModal = ({
   guesses,
   showAlert,
 }) => {
+  const { t } = useTranslation();
+
   const handleShare = () => {
-    shareStatus(guesses, isGameLost, isHardMode);
-    showAlert('Game copied to clipboard', 'success');
+    shareStatus(guesses, isGameLost, isHardMode, t);
+    showAlert(t('copied-to-clipboard'), 'success');
   };
 
   return (
-    <Modal title="Statistics" isOpen={isOpen} onClose={onClose}>
+    <Modal title={t('statistics')} isOpen={isOpen} onClose={onClose}>
       <div className={styles.statsBar}>
-        <StatItem label="Played" value={gameStats.totalGames} />
-        <StatItem label="Win Rate %" value={gameStats.successRate} />
-        <StatItem label="Current Streak" value={gameStats.currentStreak} />
-        <StatItem label="Best Streak" value={gameStats.bestStreak} />
+        <StatItem label={t('played')} value={gameStats.totalGames} />
+        <StatItem label={t('win-rate')} value={gameStats.successRate} />
+        <StatItem label={t('current-streak')} value={gameStats.currentStreak} />
+        <StatItem label={t('best-streak')} value={gameStats.bestStreak} />
       </div>
-      <h2>Guess Distribution</h2>
+      <h2>{t('guess-distribution')}</h2>
       <div className={styles.winDistribution}>
         {gameStats.winDistribution.map((value, i) => (
           <Progress
@@ -43,7 +46,7 @@ const StatsModal = ({
       {(isGameWon || isGameLost) && (
         <div className={styles.result}>
           <div className={styles.countDown}>
-            <h2>Next word in</h2>
+            <h2>{t('next-word-in')}</h2>
             <CountDown
               date={tomorrow}
               daysInHours={true}
@@ -51,7 +54,7 @@ const StatsModal = ({
             />
           </div>
           <div className={styles.share}>
-            <button onClick={handleShare}>Share</button>
+            <button onClick={handleShare}>{t('share')}</button>
           </div>
         </div>
       )}

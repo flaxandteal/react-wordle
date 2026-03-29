@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import Modal from 'components/Modal';
 import Switch from 'components/Switch';
 import styles from './SettingModal.module.scss';
@@ -12,18 +13,20 @@ const SettingModal = ({
   setIsDarkMode,
   setIsHighContrastMode,
 }) => {
+  const { t } = useTranslation();
+
   return (
-    <Modal title="Setting" isOpen={isOpen} onClose={onClose}>
+    <Modal title={t('settings')} isOpen={isOpen} onClose={onClose}>
       <Row
-        title="Hard Mode"
-        desc="Any revealed hints must be used in subsequent guesses"
+        title={t('hard-mode')}
+        desc={t('hard-mode-desc')}
         isOn={isHardMode}
         onToggle={setIsHardMode}
       />
-      <Row title="Dark Mode" isOn={isDarkMode} onToggle={setIsDarkMode} />
+      <Row title={t('dark-mode')} isOn={isDarkMode} onToggle={setIsDarkMode} />
       <Row
-        title="High Contrast Mode"
-        desc="For improved color vision"
+        title={t('high-contrast-mode')}
+        desc={t('high-contrast-desc')}
         isOn={isHighContrastMode}
         onToggle={setIsHighContrastMode}
       />

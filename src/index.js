@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { AlertProvider } from 'context/AlertContext';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import './i18n';
 
 ReactDOM.render(
   <React.StrictMode>
-    <AlertProvider>
-      <App />
-    </AlertProvider>
+    <Suspense fallback="">
+      <AlertProvider>
+        <App />
+      </AlertProvider>
+    </Suspense>
   </React.StrictMode>,
   document.getElementById('root')
 );
